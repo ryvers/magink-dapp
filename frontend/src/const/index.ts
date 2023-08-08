@@ -25,4 +25,6 @@ export const astarFacts: string[] = [
   `So, if you're itching to build amazing decentralized applications, ink! is the perfect sidekick. With its user-friendly simplicity and the raw power of Rust, you'll not only set free your creativity and craft groundbreaking solutions in no time, but you'll also unlock the possibility of a full-time career as a master of smart contract wizardry. For more information and a wealth of additional resources, dive into the enchanting world of <a href="https://github.com/AstarNetwork/aWASoMe" target="_blank">aWASoMe</a>ness.`,
 
   `Darling, did you honestly think obtaining that NFT would be a mere walk in the park? Well, fear not! With the treasure trove of knowledge and references you've acquired from these lessons, you have the impeccable ability to contribute and shine with this dApp. Get ready to make your mark by using the template from <a href="https://github.com/swanky-dapps/magink-dapp" target="_blank">magink! repo</a> and elegantly extending this dApp with the NFT claiming functionality.`,
+
+  `Extended version of magink! by me d(-_-)b`
 ];

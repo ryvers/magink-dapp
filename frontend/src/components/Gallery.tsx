@@ -9,6 +9,7 @@ import crystals from "../assets/crystals.png";
 import crystalball from "../assets/crystalball.png";
 import crow from "../assets/crow.png";
 import book from "../assets/book.png";
+import wizard from "../assets/wizard.png"
 
 type Props = {
     level: number;
@@ -17,7 +18,7 @@ type Props = {
 export const Gallery = ({ level }: Props) => {
     const [gallery, setGallery] = useState<number>(0);
 
-    const fullGallery: Array<string> = [candle, book, frog, pot, crow, crystalball, crystals, potionblue, hat];
+    const fullGallery: Array<string> = [candle, book, frog, pot, crow, crystalball, crystals, potionblue, hat, wizard];
     const achievedGallery: Array<string> = fullGallery.slice(0, level);
 
     const GalleryItems = () => {
@@ -33,7 +34,7 @@ export const Gallery = ({ level }: Props) => {
         <div>
             <br/>
             <hr/>
-            {gallery == 9 ? <h3 className="animate-pulse text-xs text-right mb-2 text-violet-500">Congratulations! You have completed the Swanky Magink! School</h3>
+            {gallery == 10 ? <h3 className="animate-pulse text-xs text-right mb-2 text-violet-500">Congratulations! You have completed the Swanky Magink! School</h3>
             : <p className="text-xs text-right mb-2 text-violet-500">You earned {gallery} badges</p>}
             <div className="flex flex-wrap">
                 <GalleryItems />

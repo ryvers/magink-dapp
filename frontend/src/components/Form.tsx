@@ -49,7 +49,7 @@ export const MaginkForm = ({ awake, isAwake, remainingBlocks, runtimeError, badg
             <br />
             <Button
               type="submit"
-              disabled={isSubmitting || !isValid || (remainingBlocks != 0 && !isFirtsClaim) || badges >= 9}
+              disabled={isSubmitting || !isValid || (remainingBlocks != 0 && !isFirtsClaim) || badges >= 10}
             >
               Claim badge
             </Button>
@@ -61,7 +61,7 @@ export const MaginkForm = ({ awake, isAwake, remainingBlocks, runtimeError, badg
           </Button>
         )}
       </div>
-      {remainingBlocks != 0 && isAwake && badges <= 9 && !isFirtsClaim && (
+      {remainingBlocks != 0 && isAwake && badges <= 10 && !isFirtsClaim && (
         <div className="text-xs text-left mb-2 text-gray-200">
           Claim a new badge after {remainingBlocks} blocks
         </div>
