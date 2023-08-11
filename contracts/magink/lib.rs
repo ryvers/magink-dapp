@@ -4,17 +4,23 @@
 pub mod magink {
     use crate::ensure;
     use ink::storage::Mapping;
+    use ink::env::{
+        call::{build_call, ExecutionInput, Selector},
+        DefaultEnvironment,
+    };
 
     #[derive(Debug, PartialEq, Eq, scale::Encode, scale::Decode)]
     #[cfg_attr(feature = "std", derive(scale_info::TypeInfo))]
     pub enum Error {
         TooEarlyToClaim,
         UserNotFound,
+        TransactionFailed
     }
 
     #[ink(storage)]
     pub struct Magink {
         user: Mapping<AccountId, Profile>,
+        token_contract: AccountId,
     }
     #[derive(
         Debug, PartialEq, Eq, PartialOrd, Ord, Clone, scale::Encode, scale::Decode,
@@ -35,9 +41,34 @@ pub mod magink {
     impl Magink {
         /// Creates a new Magink smart contract.
         #[ink(constructor)]
-        pub fn new() -> Self {
+        pub fn new(contract_acc: AccountId) -> Self {
             Self {
                 user: Mapping::new(),
+                token_contract: contract_acc,
+            }
+        }
+
+        #[ink(message)]
+        pub fn mint_wizard(&self) -> Result<(), Error> {
+            //wizard is last step so 9 badges has to be collected before claiming the last badge
+            ensure!(self.get_badges() == 9, Error::TooEarlyToClaim);
+            self.claim();
+            //cross contract call to mint psp34
+            let mint_result = build_call::<DefaultEnvironment>()
+                .call(self.token_contract)
+                .gas_limit(5000000000)
+                .exec_input(
+                    ExecutionInput::new(Selector::new(ink::selector_bytes!("PSP34Mintable::mint")))
+                        .push_arg(self.env().caller())
+                        .push_arg(10),
+                )
+                .returns::<()>()
+                .try_invoke();
+
+            // ink::env::debug_println!("mint_result: {:?}", mint_result);
+            match mint_result {
+                Ok(Ok(_)) => Ok(()),
+                _ => Err(Error::TransactionFailed),
             }
         }
 

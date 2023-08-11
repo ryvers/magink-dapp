@@ -15,15 +15,42 @@ export const useSubmitHandler = () => {
     const claimArgs = undefined;
     const options = undefined;
 
-    claim?.signAndSend(claimArgs, options, (result, _api, error) => {
+    const claimInvoke = claim!;
+    claimInvoke.signAndSend(claimArgs, options, (result, _api, error) => {
       if (error) {
         console.error(JSON.stringify(error));
         setSubmitting(false);
       }
 
-      if (!result?.status.isInBlock) return;
+      if (result! && result.status.isInBlock) return;
 
       setSubmitting(false);
     });
   };
 };
+
+export const useMintWizardHandler = () => {
+  const { mintWizard } = useMaginkContract();
+  
+  return async (
+    values: Values,
+    { setSubmitting }: FormikHelpers<Values>
+  ) => {
+    console.log("send mint_wizard Tx")
+
+    const claimArgs = undefined;
+    const options = undefined;
+
+    let mintWizardInvoke = mintWizard!;
+    mintWizardInvoke.signAndSend(claimArgs, options, (result, _api, error) => {
+      if (error) {
+        console.error(JSON.stringify(error));
+        setSubmitting(false);
+      }
+
+      if (result! && result.status.isInBlock) return;
+
+      setSubmitting(false);
+    });
+  };
+}

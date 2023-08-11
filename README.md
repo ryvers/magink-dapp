@@ -81,6 +81,9 @@ The Magink! contract is deployed on Shibuya testnet at the following address:
 ```
 apJNVQJ5T4C5gZ1XRPw2MAHcUFxbuHch7BPGQuTyT8DHjeX
 ```
+new address is :
+```WkHF1yoDN7VFmEaZAonsKhqBdkZBFMh9oDMYmbuADjSqbpB```
+
 Its metadata can be [found here](./frontend/src/metadata.json). 
 
 ## The frontend

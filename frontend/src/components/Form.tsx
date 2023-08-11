@@ -22,7 +22,7 @@ export const MaginkForm = ({ awake, isAwake, remainingBlocks, runtimeError, badg
   const { account } = useWallet();
   const { setShowConnectWallet } = useUI();
   const balance = useBalance(account);
-  const hasFunds = !balance?.freeBalance.isEmpty && !balance?.freeBalance.isZero();
+  const hasFunds = balance && !balance.freeBalance.isEmpty && !balance.freeBalance.isZero();
 
   const isFirtsClaim = badges == 0;
 
@@ -43,24 +43,35 @@ export const MaginkForm = ({ awake, isAwake, remainingBlocks, runtimeError, badg
       )}
 
       <div className="group">
-        {account && isAwake && (
-          <>
-            <InkFacts badges={badges} />
-            <br />
-            <Button
-              type="submit"
-              disabled={isSubmitting || !isValid || (remainingBlocks != 0 && !isFirtsClaim) || badges >= 10}
-            >
-              Claim badge
+          {account && isAwake && (
+            <>
+              <InkFacts badges={badges} />
+              <br />
+              {badges < 9 && (
+                <Button
+                  type="submit"
+                  disabled={isSubmitting || !isValid || (remainingBlocks != 0 && !isFirtsClaim) || badges >= 9}
+                >
+                  Claim badge
+                </Button>
+              )}
+              {badges == 9 && (
+                <Button
+                  type="reset"
+                  disabled={isSubmitting || !isValid || (remainingBlocks != 0 && !isFirtsClaim)}
+                >
+                  Mint
+                </Button>
+              )}
+            </>
+          )}
+          {!account && (
+            <Button type="button" onClick={() => setShowConnectWallet(true)}>
+              Connect Wallet
             </Button>
-          </>
-        )}
-        {!account && (
-          <Button type="button" onClick={() => setShowConnectWallet(true)}>
-            Connect Wallet
-          </Button>
-        )}
-      </div>
+          )}
+        </div>
+      
       {remainingBlocks != 0 && isAwake && badges <= 10 && !isFirtsClaim && (
         <div className="text-xs text-left mb-2 text-gray-200">
           Claim a new badge after {remainingBlocks} blocks

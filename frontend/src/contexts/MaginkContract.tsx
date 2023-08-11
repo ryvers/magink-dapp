@@ -14,6 +14,8 @@ interface MaginkContractState {
   getRemainingFor?: Call<number>;
   getBadges?: Call<number>;
   getBadgesFor?: Call<number>;
+  mintWizard?: Tx<number>;
+  mintWizardDryRun?: DryRun<number>;
 }
 
 export const MaginkContractContext = createContext<MaginkContractState>({});
@@ -28,11 +30,14 @@ export function MaginkContractProvider({ children }: PropsWithChildren) {
   const getBadges = useCall<number>(magink, 'getBadges');
   const getBadgesFor = useCall<number>(magink, 'getBadgesFor');
   const getRemainingFor = useCall<number>(magink, 'getRemainingFor');
+  const mintWizard = useTx(magink, 'mintWizard');
+  const mintWizardDryRun = useDryRun<number>(magink, 'mintWizard');
   useTxNotifications(claim);
   useTxNotifications(start);
+  useTxNotifications(mintWizard);
 
   return (
-    <MaginkContractContext.Provider value={{ magink, startDryRun, claimDryRun, start, claim, getRemaining, getRemainingFor, getBadges, getBadgesFor }}>
+    <MaginkContractContext.Provider value={{ magink, startDryRun, claimDryRun, start, claim, getRemaining, getRemainingFor, getBadges, getBadgesFor, mintWizard, mintWizardDryRun }}>
       {children}
     </MaginkContractContext.Provider>
   );

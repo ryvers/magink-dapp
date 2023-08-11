@@ -1,6 +1,6 @@
 import { Formik } from 'formik';
 import { initialValues } from '../const';
-import { useMaginkContract, useSubmitHandler, useUI } from '../hooks';
+import { useMaginkContract, useSubmitHandler, useUI, useMintWizardHandler } from '../hooks';
 import { MaginkForm } from './Form';
 import { Header } from './Header';
 import { SubmitResult } from './SubmitResult';
@@ -13,6 +13,7 @@ import { useBlockHeader, useWallet } from 'useink';
 export const FormContainer = () => {
   const { magink, start, getRemaining, getRemainingFor, getBadgesFor } = useMaginkContract();
   const submitFn = useSubmitHandler();
+  const submitMint = useMintWizardHandler();
   const { account } = useWallet();
   const { showConnectWallet, setShowConnectWallet } = useUI();
   const { claim } = useMaginkContract();
@@ -31,7 +32,8 @@ export const FormContainer = () => {
   const checkBadges = async () => {
     if (!isAwake) return;
     //get remaining blocks until next claim
-    const remaining = await getRemainingFor?.send([account?.address], { defaultCaller: true });
+    // eslint-disable-next-line
+    const remaining = await getRemainingFor?.send([account?.address], { defaultCaller: true }); // eslint-disable-next-line
     console.log('##### blocks until claim', remaining?.ok && remaining.value.decoded);
     if (remaining?.ok && remaining.value.decoded) {
       setRemainingBlocks(remaining.value.decoded);
@@ -94,6 +96,10 @@ export const FormContainer = () => {
         onSubmit={(values, helpers) => {
           if (!helpers) return;
           submitFn(values, helpers);
+        }}
+        onReset={(values, helpers) => {
+          if(!helpers) return;
+          submitMint(values, helpers);
         }}
       >
         {({ status: { finalized, events, errorMessage } = {}, isSubmitting }) => {
